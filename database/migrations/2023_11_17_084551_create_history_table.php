@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer('learned_amount', false, true);
             $table->integer('learning_amount', false, true);
             $table->integer('not_learn_amount', false, true);
-            $table->foreignId('user_id')->constrained('users','user_id');
+            $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
         });
     }

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('repetitions', function (Blueprint $table) {
             $table->integer('internals', false, true);
-            $table->foreignId('user_id')->constrained('users','user_id');
+            $table->foreignId('user_id')->constrained('users');
             $table->integer('level', false, true);
             $table->timestamps();
             
