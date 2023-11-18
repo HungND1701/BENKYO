@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
+        Schema::create('flashcards', function (Blueprint $table) {
+            $table->id('card_id');
+            $table->integer('learn_points', false, true);
+            $table->date('last_learned_date');
+            $table->boolean('is_favourite');
+            $table->string('word', 255);
+            $table->string('meaning', 255);
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('flashcards');
     }
 };
