@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('notification_id');
             $table->string('content', 255);
             $table->boolean('is_read');
-            $table->foreignId('user_id')->constrained('users','user_id');
+            $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
         });
     }
