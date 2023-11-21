@@ -12,6 +12,7 @@ class Tag extends Model
     use HasFactory;
 
     protected $fillable=['*'];
+    protected $primaryKey = 'tag_id';
 
     public function flashcards(): HasMany
     {
