@@ -12,8 +12,8 @@ class RememberByHeart extends Model
 
     protected $fillable=['*'];
 
-    public function flashCard(): BelongsTo
+    public function flashcard(): BelongsTo
     {
-        return $this->belongsTo(FlashCard::class);
+        return $this->belongsTo(Flashcard::class);
     }
 }
