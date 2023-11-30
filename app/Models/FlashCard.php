@@ -10,12 +10,14 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Flashcard extends Model
 {
     use HasFactory;
+    protected $table = 'flashcards';
+    protected $primaryKey = 'card_id';
 
     protected $fillable=['*'];
 
     public function tag() : BelongsTo
     {
-        return $this->belongsTo(Tag::class);
+        return $this->belongsTo(Tag::class, 'tag_id', 'tag_id');
     }
 
     public function rememberByHeart(): HasOne

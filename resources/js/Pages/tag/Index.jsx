@@ -2,12 +2,14 @@ import {React, useState} from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import Tag from './Tag.jsx';
-import { Row, Button, Tooltip, Modal, Form, Input, Checkbox } from 'antd';
+import { Row, Button, Tooltip, Modal, Form, Input, notification, Empty } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { Inertia } from '@inertiajs/inertia'
+const { Search } = Input;
 
 const Tags = ({ auth, mustVerifyEmail, status, ...props }) => {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [tags, setTags] = useState(props.tags);
 
     const showAddModal = () => {
         setIsAddModalOpen(true);
@@ -22,8 +24,10 @@ const Tags = ({ auth, mustVerifyEmail, status, ...props }) => {
     const onAddFinish = (values) => {
         Inertia.post(route('tags.store', { tag: values}), values, {
             onSuccess: () => {
+                console.log('Post success!');
             },
-            onError: () => {
+            onError: (error) => {
+                console.log(error);
             }
         })
     };
@@ -31,10 +35,13 @@ const Tags = ({ auth, mustVerifyEmail, status, ...props }) => {
         console.log('Failed:', errorInfo);
     };
 
-    const handleCancel = () => {}
+    const handleDeleteCancel = () => {
+        Modal.destroyAll();
+    }
     const handleOk = (tag_id) => {
         Inertia.delete(route('tags.destroy', { tag: tag_id}), {
             onSuccess: () => {
+                openSuccessNotification('Successfully deleted', 'You have successfully deleted a tag !')
             },
             onError: () => {
             }
@@ -46,19 +53,21 @@ const Tags = ({ auth, mustVerifyEmail, status, ...props }) => {
             title: `Are you sure to delete ${tagname}?`,
             onOk() {},
             footer:[
-                <Button key="cancel" onClick={handleCancel}>
+            <div className='flex gap-2 justify-end pt-6'>
+                <Button key="cancel" onClick={handleDeleteCancel}>
                     Cancel
-                </Button>,
+                </Button>
                 <Button key="ok" type="primary" onClick={() => {handleOk(tag_id)}} style={{ background: '#1890ff', borderColor: '#1890ff' }}>
                     OK
-                </Button>,
+                </Button>
+            </div>
             ]
         });
     };
 
     const tagRows = [];
-    for (let i = 0; i < props.tags.length; i += 4) {
-        const tagsInRow = props.tags.slice(i, i + 4);
+    for (let i = 0; i < tags.length; i += 4) {
+        const tagsInRow = tags.slice(i, i + 4);
         const tagElements = tagsInRow.map(tag => (
             <Tag key={tag.tag_id} tag={tag} deleteWarning={warning}/>
         ));
@@ -69,6 +78,24 @@ const Tags = ({ auth, mustVerifyEmail, status, ...props }) => {
         </Row>
         );
     }
+
+    const onSearch = (value) => {
+        if (value.length === 0 ) {
+            setTags(props.tags);
+        } else {
+            setTags(props.tags.filter(tag => tag.tag_name.toUpperCase().includes(value.toUpperCase())));
+        }
+    }
+
+    const openSuccessNotification = (message, description) => {
+    notification.open({
+        message: message,
+        description: description,
+        onClick: () => {
+            console.log('Notification Clicked!');
+        },
+    });
+    };
 
     return (
         <AuthenticatedLayout
@@ -122,7 +149,7 @@ const Tags = ({ auth, mustVerifyEmail, status, ...props }) => {
                     <Input />
                     </Form.Item>
 
-                    <Form.Item
+                    {/* <Form.Item
                     name="remember"
                     valuePropName="checked"
                     wrapperCol={{
@@ -131,7 +158,7 @@ const Tags = ({ auth, mustVerifyEmail, status, ...props }) => {
                     }}
                     >
                     <Checkbox>Remember me</Checkbox>
-                    </Form.Item>
+                    </Form.Item> */}
 
                     <Form.Item
                     wrapperCol={{
@@ -140,12 +167,16 @@ const Tags = ({ auth, mustVerifyEmail, status, ...props }) => {
                     }}
                     >
                     <Button type="primary" htmlType="submit" style={{ background: "#2e1065"}}>
-                        Submit
+                        Create
                     </Button>
                     </Form.Item>
                 </Form>
             </Modal>
-            <div className='flex justify-end items-center gap-2'>
+            <div className="flex justify-between mb-8 py-3 px-4 bg-white overflow-hidden border-b-2 border-slate-300 items-center">
+                <h3 className="text-2xl leading-6 font-medium text-gray-900">
+                    Tags List
+                </h3>
+                <div className='flex justify-end items-center gap-2'>
                 <Tooltip title="Add Card">
                     <Button 
                         type="primary" 
@@ -157,12 +188,22 @@ const Tags = ({ auth, mustVerifyEmail, status, ...props }) => {
                     />
                 </Tooltip>
                 <div className='text-base font-bold text-purple-950'>
-                    Add New Card
+                    Add New Tag
                 </div>
             </div>
+            </div>
+            <div className='px-8'>
+                <Search
+                    placeholder="Input tag name"
+                    onSearch={onSearch}
+                    style={{
+                        width: 300,
+                    }}
+                />
+            </div>
             <div className="py-12">
-                <div className="max-w-7xl sm:px-6 lg:px-8 space-y-6">
-                    {tagRows}
+                <div className="max-w-8xl sm:px-6 lg:px-8 space-y-6">
+                    {tagRows.length > 0 ? tagRows : <div className='mt-48'><Empty /></div>}
                 </div>
             </div>
         </AuthenticatedLayout>)

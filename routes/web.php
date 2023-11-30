@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\FlashcardController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -50,5 +51,9 @@ Route::get('/tags/{tag}/edit', [TagController::class, 'edit'])->name('tags.edit'
 Route::put('/tags/{tag}', [TagController::class, 'update'])->name('tags.update');
 Route::get('/tags/{tag}', [TagController::class, 'show'])->name('tags.show');
 Route::delete('/tags/{tag}', [TagController::class, 'destroy'])->name('tags.destroy');
+
+Route::delete('/flashcards/{flashcard}', [FlashcardController::class, 'destroy'])->name('flashcards.destroy');
+Route::put('/flashcards/{flashcard}', [FlashcardController::class, 'update'])->name('flashcards.update');
+Route::post('/flashcards', [FlashcardController::class, 'store'])->name('flashcards.store');
 
 require __DIR__.'/auth.php';

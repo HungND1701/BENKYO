@@ -26,9 +26,9 @@ const EditTag = ({ auth, mustVerifyEmail, status, ...props }) => {
             <Head title="Edit Tag" />
             <div className="py-12">
                 <div className="w-full mx-auto sm:px-6 lg:px-8">
-                    <div className="mb-8 py-5 px-4 bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div className="mb-8 py-3 px-4 bg-white overflow-hidden border-b-2 border-slate-300">
                         <h3 className="text-2xl leading-6 font-medium text-gray-900">
-                            Edit Tag
+                            Edit Tag: <div className='inline-block font-semibold text-blue-500 ml-4'>{props.tag.tag_name}</div>
                         </h3>
                     </div>
                     <Form
@@ -41,7 +41,7 @@ const EditTag = ({ auth, mustVerifyEmail, status, ...props }) => {
                         }}
                         style={{
                             maxWidth: 600,
-                            marginTop: '10px',
+                            marginTop: '60px',
                         }}
                         initialValues={{
                             remember: true,
@@ -53,7 +53,7 @@ const EditTag = ({ auth, mustVerifyEmail, status, ...props }) => {
                         autoComplete="off"
                     >
                         <Form.Item
-                        label="Title:    "
+                        label={<div className='text-lg font-semibold'>Title</div>}
                         name="title"
                         rules={[
                             {
@@ -66,7 +66,7 @@ const EditTag = ({ auth, mustVerifyEmail, status, ...props }) => {
                         </Form.Item>
 
                         <Form.Item
-                        label="Description:   "
+                        label={<div className='text-lg font-semibold'>Description</div>}
                         name="description"
                         rules={[
                             {
@@ -78,7 +78,7 @@ const EditTag = ({ auth, mustVerifyEmail, status, ...props }) => {
                         <Input />
                         </Form.Item>
 
-                        <Form.Item
+                        {/* <Form.Item
                         name="remember"
                         valuePropName="checked"
                         wrapperCol={{
@@ -87,7 +87,7 @@ const EditTag = ({ auth, mustVerifyEmail, status, ...props }) => {
                         }}
                         >
                         <Checkbox>Remember me</Checkbox>
-                        </Form.Item>
+                        </Form.Item> */}
 
                         <Form.Item
                         wrapperCol={{
@@ -95,8 +95,8 @@ const EditTag = ({ auth, mustVerifyEmail, status, ...props }) => {
                             span: 16,
                         }}
                         >
-                        <Button type="primary" htmlType="submit" style={{ background: "#2e1065"}}>
-                            Submit
+                        <Button type="primary" htmlType="submit" style={{ background: "#2e1065", marginTop: "20px"}} className='hover:bg-white hover:text-purple-900'>
+                            Change
                         </Button>
                         </Form.Item>
                     </Form>

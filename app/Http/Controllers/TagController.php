@@ -56,9 +56,13 @@ class TagController extends Controller
 
     public function show(Request $request): Response
     {   
+
+        $flashcards = Tag::find((int)$request->tag)->flashcards->sortDesc()->values()->all();;
+
         return Inertia::render(
             'tag/Show', [
-                'tag' => Tag::where('tag_id', (int)$request->tag)->get()->first()
+                'tag' => Tag::where('tag_id', (int)$request->tag)->get()->first(),
+                'flashcards' => $flashcards,
             ]
         );
     }
@@ -102,9 +106,7 @@ class TagController extends Controller
         return redirect()->route('tags.index');
     }
 
-    /**
-     * Delete the user's account.
-     */
+    
     public function destroy(Request $request, Tag $tag)
     {
         try {

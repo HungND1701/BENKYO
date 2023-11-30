@@ -19,20 +19,20 @@ const Tag = ({tag, ...props}) => {
     }
 
     return (
-        <Col className="gutter-row  w-1/5" span={6}>
+        <Col className="gutter-row  w-60 cursor-pointer" span={6}>
             <div style={style} className='h-min rounded-md bg-purple-950'>
                 <div className='flex p-2.5'>
-                    <div className='flex-initial w-64 text-white font-bold text-lg uppercase'>
+                    <div className='flex-initial w-60 text-white font-bold text-lg uppercase' onClick={showTag}>
                         {tag.tag_name}
                     </div>
                     <div className='flex text-white text-xl font-bold gap-3'>
-                        <div className='px-1 border-2 border-white cursor-pointer rounded-md'>
+                        <div className='px-1 border-2 border-white cursor-pointer rounded-md bg-blue-500'>
                             <EditOutlined onClick={editTag}/>
                         </div>
-                        <div className='px-1 border-2 border-white cursor-pointer rounded-md'>
+                        <div className='px-1 border-2 border-white cursor-pointer rounded-md bg-red-500'>
                             <DeleteOutlined onClick={() => {props.deleteWarning(tag.tag_name, tag.tag_id)}}/>
                         </div>
-                        <div className='px-1 border-2 border-white cursor-pointer rounded-md'>
+                        <div className='px-1 border-2 border-white cursor-pointer rounded-md bg-yellow-500'>
                             <EyeOutlined onClick={showTag}/>
                         </div>
                     </div>

@@ -16,7 +16,7 @@ class Tag extends Model
 
     public function flashcards(): HasMany
     {
-        return $this->hasMany(Flashcard::class);
+        return $this->hasMany(FlashCard::class, 'tag_id', 'tag_id');
     }
 
     public function user(): BelongsTo
