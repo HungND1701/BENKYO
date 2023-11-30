@@ -12,10 +12,11 @@ class Tag extends Model
     use HasFactory;
 
     protected $fillable=['*'];
+    protected $primaryKey = 'tag_id';
 
     public function flashcards(): HasMany
     {
-        return $this->hasMany(Flashcard::class);
+        return $this->hasMany(FlashCard::class, 'tag_id', 'tag_id');
     }
 
     public function user(): BelongsTo
