@@ -13,7 +13,8 @@ use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\Tag;
-use DB;
+use Illuminate\Support\Facades\DB;
+use Exception;
 
 class TagController extends Controller
 {
@@ -37,7 +38,7 @@ class TagController extends Controller
                 [
                     'tag_name' => $validated['title'],
                     'description' => $validated['description'],
-                    'user_id' => 2,
+                    'user_id' => 1,
                     'created_at' => now(),
                     'updated_at' => now(),
                     'is_marked' => false,
