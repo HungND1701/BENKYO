@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Flashcard;
 use App\Http\Requests\UpdateFlashcardRequest;
 use App\Http\Requests\AddFlashcardRequest;
-use DB;
+use Illuminate\Support\Facades\DB;
+use Exception;
 
 class FlashcardController extends Controller
 {
