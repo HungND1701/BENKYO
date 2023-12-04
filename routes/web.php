@@ -48,12 +48,14 @@ Route::middleware('auth')->group(
 Route::get('/tags', [TagController::class, 'index'])->name('tags.index');
 Route::post('/tags', [TagController::class, 'store'])->name('tags.store');
 Route::get('/tags/{tag}/edit', [TagController::class, 'edit'])->name('tags.edit');
+Route::get('/tags/{tag}/learn', [TagController::class, 'learn'])->name('tags.learn');
 Route::put('/tags/{tag}', [TagController::class, 'update'])->name('tags.update');
 Route::get('/tags/{tag}', [TagController::class, 'show'])->name('tags.show');
 Route::delete('/tags/{tag}', [TagController::class, 'destroy'])->name('tags.destroy');
 
 Route::delete('/flashcards/{flashcard}', [FlashcardController::class, 'destroy'])->name('flashcards.destroy');
 Route::put('/flashcards/{flashcard}', [FlashcardController::class, 'update'])->name('flashcards.update');
+Route::put('/flashcards/{flashcard}', [FlashcardController::class, 'addFavourite'])->name('flashcards.addFavourite');
 Route::post('/flashcards', [FlashcardController::class, 'store'])->name('flashcards.store');
 
 require __DIR__.'/auth.php';

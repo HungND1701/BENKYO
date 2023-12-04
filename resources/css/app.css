@@ -15,5 +15,72 @@
 .ant-input-borderless:focus {
     outline: transparent!important;
 }
+.container {
+    width: 500px;
+    height: 300px;
+    perspective: 800px;
+}
+  
+.container:hover > .card {
+    cursor: pointer;
+}
+.card {
+    position: relative;
+    transition: transform 0.5s ease-in-out;
+    transform-style: preserve-3d;
+}
+.slideRight{
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    opacity: 0;
+    transform: translateX(200px);
+}
+.appearLeft{
+    transition: transform 0s ease-in-out, opacity 0s ease-in-out;
+    transform: translateX(-400px);
+}
+.slideLeft{
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    opacity: 0;
+    transform: translateX(-200px);
+}
+.appearRight{
+    transition: transform 0s ease-in-out, opacity 0s ease-in-out;
+    transform: translateX(400px);
+}
+.returnDis{
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    transform: translateX(0px);
+    opacity: 1;
+}
+.clicked {
+    position: relative;
+    transition: transform 500ms;
+    transform-style: preserve-3d;
+    transform: rotateY(180deg);
+}
+.frontCard {
+  height: 300px;
+  width: 500px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: absolute;
+  backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.backCard{
+    height: 300px;
+    width: 500px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: absolute;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transform: rotateY(180deg);
+}
 
 

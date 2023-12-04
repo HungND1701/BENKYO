@@ -80,6 +80,16 @@ class TagController extends Controller
         );
     }
 
+    public function learn(Request $request): Response
+    {   
+        $tag = Tag::with('flashcards')->where('tag_id', (int)$request->tag)->get()->first();
+        return Inertia::render(
+            'tag/Learn', [
+                'tag' => $tag
+            ]
+        );
+    }
+
     /**
      * Update the user's profile information.
      */

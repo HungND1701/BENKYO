@@ -79,4 +79,28 @@ class FlashcardController extends Controller
 
         return redirect()->route('tags.show', ['tag' => $flashcard->tag_id]);
     }
+    public function addFavourite(Request $request, Flashcard $flashcard)
+    {
+        try {
+             // Lấy giá trị is_favourite từ request body
+            $isFavourite = $request->input('is_favourite');
+
+            // Cập nhật dữ liệu trong CSDL
+            DB::table('flashcards')
+                ->where('card_id', $flashcard->card_id)
+                ->update([
+                    'is_favourite' => $isFavourite,
+                ]);
+
+        } catch (Exception $e) {
+            return redirect()->back()->withErrors(
+                [
+                    'update' => $e->getMessage(),
+                ]
+            );
+        }
+
+        return response()->json( DB::table('flashcards')
+        ->where('card_id', $flashcard->card_id)->first());
+    }
 }
