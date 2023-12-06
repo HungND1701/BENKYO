@@ -63,21 +63,21 @@ const ShowTag = ({ auth, mustVerifyEmail, status, ...props }) => {
             <Head title="Show Tag" />
             {modalVisible && (
                 <div className="modal-overlay">
-                    <div className="modal"> 
+                    <div className="modal" style={{paddingTop: '50px', paddingLeft: '20px'}}> 
                         <Button style={{position: 'absolute', top: '8px', right: '8px', borderColor: '#fff'}} onClick={closeModal}  icon={<CloseOutlined style={{ fontSize: '16px'}}/>}/>
-                        <div class='w-full p-3 flex justify-between'>
-                            <div class='flex flex-col space-y-10'>
-                                <div class='text-4xl font-medium'>{tagName}</div>
-                                <div class='text-xl font-normal'>Set up your test</div>
+                        <div className='flex justify-between mb-8'>
+                            <div className='flex flex-col space-y-2 mb-5'>
+                                <div className='text-3xl font-bold'>{tagName}</div>
+                                <div className='text-xl font-bold' style={{color: '#3d5c98'}}>Set up your test</div>
                             </div>
-                            <TestIcon></TestIcon>
+                                <TestIcon></TestIcon>
                         </div>
-                        <div class='w-full p-3 flex justify-between'>
-                            <div class='text-xl font-normal'>Question</div>
+                        <div className='p-3 flex justify-between'>
+                            <div className='text-xl font-bold'>Question</div>
                             <InputNumber min={1} max={0 + (isTrueFalse ? flashcardsLength : 0)+(isMulti ? flashcardsLength*2 : 0)} defaultValue={1} onChange={onChangeNumberQuizzes} />
                         </div>
-                        <div class='w-full p-3 flex justify-between'>
-                            <div class='text-xl font-normal'>Answer with</div>
+                        <div className='p-3 flex justify-between'>
+                            <div className='text-xl font-bold'>Answer with</div>
                             <Select
                             defaultValue="Japanese"
                             style={{
@@ -97,16 +97,16 @@ const ShowTag = ({ auth, mustVerifyEmail, status, ...props }) => {
                             />
                         </div>
                         <div className="full-width-line mt-2"></div>
-                        <div class='w-full p-3 flex justify-between'>
-                            <div class='text-xl font-normal'>True/False</div>
+                        <div className='w-full p-3 flex justify-between mb-4'>
+                            <div className='text-xl font-bold'>True/False</div>
                             <Switch defaultChecked onChange={onChangeTrueFalse} />
                         </div>
-                        <div class='w-full p-3 flex justify-between'>
-                            <div class='text-xl font-normal'>Multiple Choice</div>
+                        <div className='w-full p-3 flex justify-between mb-4'>
+                            <div className='text-xl font-bold'>Multiple Choice</div>
                             <Switch defaultChecked onChange={onChangeMultichoice} />
                         </div>
-                        <div class='flex justify-end'>
-                            <Button onClick={() => {quizzeCard(props.tag.tag_id)}}class="drop-shadow-lg ">Start Test</Button>
+                        <div className='flex justify-end'>
+                            <Button onClick={() => {quizzeCard(props.tag.tag_id)}} className="drop-shadow-lg" style={{backgroundColor: '#3d5c98', paddingTop: 4, color: '#fff', fontWeight: 700}}>Start Test</Button>
                         </div>
                     </div>
                 </div>
@@ -117,21 +117,6 @@ const ShowTag = ({ auth, mustVerifyEmail, status, ...props }) => {
                         <h3 className="text-4xl leading-6 font-medium" style={{fontWeight: 700}}>
                             Tag Detail
                         </h3>
-                        <div className='flex gap-2 bg-blue-300 px-3 py-1 rounded cursor-pointer' onClick={() => {editTag(props.tag.tag_id)}}>
-                            <EditOutlined className="text-xl" />
-                            <div className='text-lg'>Edit</div>
-                        </div>
-                    </div>
-                    <div className='text-xl px-4'>
-                        <div className='tracking-wide font-semibold py-5'>Title: </div>
-                        <div className='border-b-2 border-slate-300 w-1/4'>{props.tag.tag_name}</div>
-                    </div>
-                    <div className='text-xl px-4'>
-                        <div className='tracking-wide font-bold py-5'>Description: </div>
-                        <div className='border-b-2 border-slate-300 w-1/4'>{props.tag.description}</div>
-                    </div>
-                    <div className='text-xl pt-6 flex justify-between'>
-                        <div className='tracking-wide font-bold py-5'>Flashcards list: </div>
                         <div className='flex gap-4'> 
                             <div className='flex items-center gap-2'>
                                 <Tooltip title="Quizzes">
@@ -167,6 +152,8 @@ const ShowTag = ({ auth, mustVerifyEmail, status, ...props }) => {
                             <div className='text-lg'>Edit</div>
                         </div>
                         </div>
+                    </div>
+                    <div className='text-xl pt-6 flex justify-between'>
                     </div>
                     <div className='text-2xl px-2'>
                         <div className='tracking-wide font-semibold py-5' style={{fontWeight: 700}}>Title: </div>
