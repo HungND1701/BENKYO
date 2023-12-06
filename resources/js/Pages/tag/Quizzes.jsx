@@ -30,6 +30,15 @@ const QuizzesTag = ({ auth, mustVerifyEmail, status, ...props }) => {
     const [quizze, setQuizze] = useState(quizzes.length > 0 ? quizzes[index] : {});
     const [answerList , setAnswerList] = useState(quizzes.length > 0 ? quizzes[index].answer : []);
     const [timeoutId, setTimeoutId] = useState(null);
+    const [divAnswers, setDivAnswers] = useState(answerList.length > 0 ? answerList.map((element, index) => (
+        <div key={index} className={`w-full h-full rounded-xl drop-shadow-lg flex justify-center items-center text-xl font-semibold ${choiceIndex == -1 ? 'bg-orange-100 hover:bg-orange-200 hover:cursor-pointer' : index==correctAnswerIndex ? 'bg-green-300' : 'bg-red-300'}`} onClick={
+            () =>{ if (element===quizze.answerCorrect) { clickCorrect(index)} else { clickWrong(index)}
+                setRunning(true);
+            }
+            }>
+            {element}
+        </div>
+    )) : []);
 
     const createQuizzes = () => {
         for(let i = 1;i<=numQuizze;i++){
@@ -170,8 +179,14 @@ const QuizzesTag = ({ auth, mustVerifyEmail, status, ...props }) => {
         setAnswerList(quizzes[index] != null ? quizzes[index].answer: []);
     }, [quizze]);
     useEffect(() => {
-        setRenderKey(renderKey + 1);
+        setDiv();
+    }, [answerList,choiceIndex,correctAnswerIndex]);
+    useEffect(() => {
+        setCorrectAnswerIndex(answerList.findIndex((e) => e===quizze.answerCorrect));
     }, [answerList]);
+    useEffect(() => {
+        setRenderKey(renderKey + 1);
+    }, [divAnswers]);
 
     const nextQuizze = () => {
         const nextIndex = index+1;
@@ -203,33 +218,32 @@ const QuizzesTag = ({ auth, mustVerifyEmail, status, ...props }) => {
     const swapAnwser = () => {
         for (let i = answerList.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
-            if(i==0) setCorrectAnswerIndex(j);
-            if(j==0) setCorrectAnswerIndex(i);
             [answerList[i], answerList[j]] = [answerList[j], answerList[i]];
         }
         setIsSwapped(true);
     }
-
-    const divAnswers = answerList.map((element, index) => (
-        <div key={index} className={`w-full h-full rounded-xl drop-shadow-lg flex justify-center items-center text-xl font-semibold ${choiceIndex == -1 ? 'bg-orange-100 hover:bg-orange-200 hover:cursor-pointer' : index==correctAnswerIndex ? 'bg-green-300' : 'bg-red-300'}`} onClick={() =>(element===quizze.answerCorrect ? clickCorrect(index) : clickWrong(index))}>
-            {element}
-        </div>
-    ));
-    useEffect(() => {
-        setRunning(false);
-        if (!isSwapped) {
-            swapAnwser();
-            let divAnswers = answerList.map((element, index) => (
-                <div key={index} className={`w-full h-full rounded-xl drop-shadow-lg flex justify-center items-center text-xl font-semibold ${choiceIndex == -1 ? 'bg-orange-100 hover:bg-orange-200 hover:cursor-pointer' : index==correctAnswerIndex ? 'bg-green-300' : 'bg-red-300'}`} onClick={
+    const setDiv = () => {
+        setDivAnswers(answerList.length > 0 ? answerList.map((element, index) => (
+            <div key={index} className={`w-full h-full rounded-xl drop-shadow-lg flex justify-center items-center text-xl font-semibold ${choiceIndex == -1 ? 'bg-orange-100 hover:bg-orange-200 hover:cursor-pointer' : index==correctAnswerIndex ? 'bg-green-300' : 'bg-red-300'}`} onClick={
                 () =>{ if (element===quizze.answerCorrect) { clickCorrect(index)} else { clickWrong(index)}
                     setRunning(true);
                 }
                 }>
-                    {element}
-                </div>
-            ));
+                {element}
+            </div>
+        )) : []);
+    }
+    
+    useEffect(() => {
+        setRunning(false);
+        if (!isSwapped) {
+            swapAnwser();
+            setDiv();
         }
     }, [isSwapped]);
+    console.log(quizzes);
+    console.log(quizze);
+    console.log(correctAnswerIndex);
     return (
         <AuthenticatedLayout
             user={auth.user}
