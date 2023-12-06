@@ -172,8 +172,8 @@ const Tags = ({ auth, mustVerifyEmail, status, ...props }) => {
                     </Form.Item>
                 </Form>
             </Modal>
-            <div className="flex justify-between mb-8 py-3 px-4 bg-white overflow-hidden border-b-2 border-slate-300 items-center">
-                <h3 className="text-2xl leading-6 font-medium text-gray-900">
+            <div className="flex justify-between mb-8 py-3 px-8 bg-white overflow-hidden border-b-2 border-slate-300 items-center">
+                <h3 className="text-2xl leading-6 font-medium text-gray-900" style={{color: '#1a1d28', fontWeight: 700}}>
                     Tags List
                 </h3>
                 <div className='flex justify-end items-center gap-2'>
@@ -182,12 +182,12 @@ const Tags = ({ auth, mustVerifyEmail, status, ...props }) => {
                         type="primary" 
                         shape="circle" 
                         icon={<PlusOutlined />} 
-                        style={{ background: "#2e1065"}} 
+                        style={{ background: "#3d5c98"}} 
                         size={"large"}
                         onClick={showAddModal}
                     />
                 </Tooltip>
-                <div className='text-base font-bold text-purple-950'>
+                <div className='text-base font-bold' style={{color: '#3d5c98'}}>
                     Add New Tag
                 </div>
             </div>

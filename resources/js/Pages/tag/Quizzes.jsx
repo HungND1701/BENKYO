@@ -1,8 +1,12 @@
 import {React, useState, useEffect } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
-import { Button, Form, Input, Checkbox } from 'antd';
 import { Inertia } from '@inertiajs/inertia'
+import {Button} from 'antd'
+import {
+    PauseOutlined,
+    PlayCircleFilled
+} from '@ant-design/icons';
 
 const QuizzesTag = ({ auth, mustVerifyEmail, status, ...props }) => {
     const tagName = props.tag.tag_name;
@@ -21,8 +25,11 @@ const QuizzesTag = ({ auth, mustVerifyEmail, status, ...props }) => {
     const [isSwapped, setIsSwapped] = useState(false);
     const [renderKey, setRenderKey] = useState(0);
     const [index, setIndex] = useState(0);
+    const [running, setRunning] = useState(false);
+    const [pause, setPause] = useState(false);
     const [quizze, setQuizze] = useState(quizzes.length > 0 ? quizzes[index] : {});
     const [answerList , setAnswerList] = useState(quizzes.length > 0 ? quizzes[index].answer : []);
+    const [timeoutId, setTimeoutId] = useState(null);
 
     const createQuizzes = () => {
         for(let i = 1;i<=numQuizze;i++){
@@ -134,13 +141,21 @@ const QuizzesTag = ({ auth, mustVerifyEmail, status, ...props }) => {
     const clickCorrect = (index) => {
         // Xử lý logic khi click đúng
         setChoiceIndex(index);
-        setTimeout(() => {nextQuizze();}, 1500);
+        setRunning(true);
+        const newTimeoutId = setTimeout(() => {
+            nextQuizze();
+        }, 1500);
+        setTimeoutId(newTimeoutId);    
     };
 
     const clickWrong = (index) => {
         // Xử lý logic khi click sai
         setChoiceIndex(index);
-        setTimeout(() => {nextQuizze();}, 1500);
+        setRunning(true);
+        const newTimeoutId = setTimeout(() => {
+            nextQuizze();
+        }, 1500);
+        setTimeoutId(newTimeoutId);
     };
     useEffect(() => {
         createQuizzes(); 
@@ -168,6 +183,23 @@ const QuizzesTag = ({ auth, mustVerifyEmail, status, ...props }) => {
         }
     }
 
+    const pauseTimeout = () => {
+        clearTimeout(timeoutId);
+        setPause(true);
+        setRunning(false);
+    };
+
+    const resumeTimeout = () => {
+        setPause(false);
+        setRunning(true);
+
+        // Set a new timeout and store its ID
+        const newTimeoutId = setTimeout(() => {
+            nextQuizze();
+        }, 1500);
+        setTimeoutId(newTimeoutId);
+    };
+
     const swapAnwser = () => {
         for (let i = answerList.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -177,18 +209,22 @@ const QuizzesTag = ({ auth, mustVerifyEmail, status, ...props }) => {
         }
         setIsSwapped(true);
     }
-    console.log(quizzes);
-    console.log(quizze);
+
     const divAnswers = answerList.map((element, index) => (
         <div key={index} className={`w-full h-full rounded-xl drop-shadow-lg flex justify-center items-center text-xl font-semibold ${choiceIndex == -1 ? 'bg-orange-100 hover:bg-orange-200 hover:cursor-pointer' : index==correctAnswerIndex ? 'bg-green-300' : 'bg-red-300'}`} onClick={() =>(element===quizze.answerCorrect ? clickCorrect(index) : clickWrong(index))}>
             {element}
         </div>
     ));
     useEffect(() => {
+        setRunning(false);
         if (!isSwapped) {
             swapAnwser();
             let divAnswers = answerList.map((element, index) => (
-                <div key={index} className={`w-full h-full rounded-xl drop-shadow-lg flex justify-center items-center text-xl font-semibold ${choiceIndex == -1 ? 'bg-orange-100 hover:bg-orange-200 hover:cursor-pointer' : index==correctAnswerIndex ? 'bg-green-300' : 'bg-red-300'}`} onClick={() =>(element===quizze.answerCorrect ? clickCorrect(index) : clickWrong(index))}>
+                <div key={index} className={`w-full h-full rounded-xl drop-shadow-lg flex justify-center items-center text-xl font-semibold ${choiceIndex == -1 ? 'bg-orange-100 hover:bg-orange-200 hover:cursor-pointer' : index==correctAnswerIndex ? 'bg-green-300' : 'bg-red-300'}`} onClick={
+                () =>{ if (element===quizze.answerCorrect) { clickCorrect(index)} else { clickWrong(index)}
+                    setRunning(true);
+                }
+                }>
                     {element}
                 </div>
             ));
@@ -202,16 +238,19 @@ const QuizzesTag = ({ auth, mustVerifyEmail, status, ...props }) => {
             <Head title="Quizzes" />
             <div className="py-1">
                 <div className="w-full mx-auto sm:px-6 lg:px-8">
-                    <div className="mb-8 py-3 px-4 bg-white overflow-hidden border-b-2 border-slate-300">
-                        <h3 className="text-2xl leading-6 font-medium text-gray-900">
-                            Quizzes of Tag: <div className='inline-block font-semibold text-blue-500 ml-4'>{tagName}</div>
+                    <div className="mb-8 py-3 px-4 overflow-hidden flex justify-between" style={{paddingLeft: 100, paddingRight: 200}}>
+                        <h3 className="text-2xl leading-6 font-bold text-gray-900" style={{fontSize: 30}}>
+                            Quizzes of Tag: <div className='inline-block font-bold ml-4' style={{fontSize: 30}}>{tagName}</div>
                         </h3>
+                        <div className='text-2xl leading-6 font-bold text-gray-900'>
+                            Right answer: { 1 } / {numQuizze}
+                        </div>
                     </div>
 
 
-                        <div class='w-full flex items-center justify-center'>
+                        <div class='w-full flex items-center justify-center mt-8'>
                             <div class='w-3/4 rounded-xl drop-shadow-lg p-4 flex justify-center'>
-                                <div class='w-5/6 h-32 bg-slate-100 rounded-sm flex justify-center items-center rounded-xl'>
+                                <div class='w-5/6 h-32 bg-slate-100 rounded-sm flex justify-center items-center rounded-xl' style={{boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px'}}>
                                     <div class='flex flex-col space-y-4 '>
                                         <div class='flex justify-center items-center text-5xl font-semibold'>
                                             {quizze != null ? quizze.word : ""}
@@ -231,7 +270,12 @@ const QuizzesTag = ({ auth, mustVerifyEmail, status, ...props }) => {
                             </div>    
                         </div>
                 
-                </div>
+                </div> 
+                {running ? <div className='flex justify-center mt-5'>
+                    <Button icon={<PauseOutlined style={{ fontSize: '20px', color: '#fff'}}/>} style={{backgroundColor: '#3d5c98', padding: 10, width: 40, height: 40}} onClick={() => {pauseTimeout()}}/>
+                </div> : (pause ? <div className='flex justify-center mt-5'>
+                    <Button icon={<PlayCircleFilled style={{ fontSize: '20px', color: '#fff'}}/>} style={{backgroundColor: '#3d5c98', padding: 10, width: 40, height: 40}} onClick={() => {resumeTimeout()}}/>
+                </div> : "")}
             </div>
         </AuthenticatedLayout>)
 }

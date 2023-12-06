@@ -26,8 +26,8 @@ const EditTag = ({ auth, mustVerifyEmail, status, ...props }) => {
             <Head title="Edit Tag" />
             <div className="py-12">
                 <div className="w-full mx-auto sm:px-6 lg:px-8">
-                    <div className="mb-8 py-3 px-4 bg-white overflow-hidden border-b-2 border-slate-300">
-                        <h3 className="text-2xl leading-6 font-medium text-gray-900">
+                    <div className="mb-8 py-8 px-4 overflow-hidden">
+                        <h3 className="text-3xl leading-6 font-medium text-gray-900" style={{fontWeight: 700}}>
                             Edit Tag: <div className='inline-block font-semibold text-blue-500 ml-4'>{props.tag.tag_name}</div>
                         </h3>
                     </div>
