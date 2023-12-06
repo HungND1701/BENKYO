@@ -172,7 +172,7 @@ const LearnTag = ({ auth, mustVerifyEmail, status, ...props }) => {
                         <div class='container'>
                             <div class='card' className={((isClicked&&!isNext&&!isPrev) ? 'clicked' : 'card') + ((isNext&&!isReturn) ? ' slideRight' : '') + (isAppearLeft ? ' appearLeft' : '') + (isReturn ? ' returnDis' : '') + ((isPrev&&!isReturn) ? ' slideLeft' : '') + (isAppearRight ? ' appearRight' : '')} onClick={handleClick} >
                                 <div class='rounded-lg frontCard' >
-                                    <Button style={{position: 'absolute', top: '12px', right: '12px'}} onClick={isFavourite ? unlike : like}  icon={<StarOutlined style={{ fontSize: '24px', color: isFavourite ? 'yellow' : 'gray' }}/>}/>
+                                    <Button style={{position: 'absolute', top: '12px', right: '12px', borderColor: '#fff'}} onClick={isFavourite ? unlike : like}  icon={<StarOutlined style={{ fontSize: '24px', color: isFavourite ? 'yellow' : 'gray' }}/>}/>
                                     <div style={{ fontSize: '20px', position: 'absolute', top: '12px', left: '18px' }}>{index+1}</div>
                                     <p class='font-medium text-3xl my-auto'>{wordCard}</p>
                                     <div class='w-full rounded-b-lg pt-1' style={{position: 'absolute',height: 35, bottom: '0px', left: '0px', textAlign: 'center', backgroundColor: '#B2E3FA'}}>
@@ -180,7 +180,7 @@ const LearnTag = ({ auth, mustVerifyEmail, status, ...props }) => {
                                     </div>
                                 </div>
                                 <div class='rounded-lg backCard' >
-                                <Button style={{position: 'absolute', top: '12px', right: '12px'}} onClick={isFavourite ? unlike : like}  icon={<StarOutlined style={{ fontSize: '24px', color: isFavourite ? 'yellow' : 'gray' }}/>}/>
+                                <Button style={{position: 'absolute', top: '12px', right: '12px', borderColor: '#fff'}} onClick={isFavourite ? unlike : like}  icon={<StarOutlined style={{ fontSize: '24px', color: isFavourite ? 'yellow' : 'gray' }}/>}/>
                                     <div style={{ fontSize: '20px', position: 'absolute', top: '12px', left: '18px' }}>{index+1}</div>
                                     <p class='font-medium text-3xl my-auto'>{meaningCard}</p>
                                     <div class='w-full rounded-b-lg pt-1' style={{position: 'absolute',height: 35, bottom: '0px', left: '0px', textAlign: 'center', backgroundColor: '#B2E3FA'}}>

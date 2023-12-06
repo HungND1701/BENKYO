@@ -90,6 +90,19 @@ class TagController extends Controller
         );
     }
 
+    public function quizzes(Request $request): Response
+    {   
+        $tag = Tag::with('flashcards')->where('tag_id', (int)$request->tag)->get()->first();
+        return Inertia::render(
+            'tag/Quizzes', [
+                'tag' => $tag,
+                'numQuizze' => intval($request->numQuizze),
+                'isTrueFalse' => $request->isTrueFalse,
+                'isMulti' => $request->isMulti
+            ]
+        );
+    }
+
     /**
      * Update the user's profile information.
      */
