@@ -3,17 +3,49 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import Flashcard from '../../Components/FlashCard';
 import { Inertia } from '@inertiajs/inertia'
-import { EditOutlined, PlusOutlined, SwitcherOutlined } from '@ant-design/icons';
-import { Empty, Button, Tooltip } from 'antd';
+import { EditOutlined, PlusOutlined, SwitcherOutlined, QuestionCircleOutlined, CloseOutlined} from '@ant-design/icons';
+import { Empty, Button, Tooltip, InputNumber, Select, Switch} from 'antd';
+import TestIcon from '../../Components/TestIcon';
 
 const ShowTag = ({ auth, mustVerifyEmail, status, ...props }) => {
     const [isAdding, setIsAdding] = useState(false);
+    const [isTrueFalse, setIsTrueFalse] = useState(true);
+    const [isMulti, setIsMulti] = useState(true);
+    const [numQuizzes, setNumQuizzes] = useState(1);
+    const [modalVisible, setModalVisible] = useState(false);
+    const tagName = props.tag.tag_name;
+    const flashcardsLength = props.flashcards.length;
+
+//   useEffect(() => {
+//     setModalVisible(false);
+//   }, []);
+    const showModel = () =>{
+        setModalVisible(true);
+    }
+    const closeModal = () =>{
+        setModalVisible(false);
+    }
+    const onChangeNumberQuizzes = (value) =>{
+        setNumQuizzes(value);
+    }
+    const handleChangeAnswerBy = (value) =>{
+        //
+    }
+    const onChangeTrueFalse = (checked) =>{
+        setIsTrueFalse(checked);
+    }
+    const onChangeMultichoice = (checked) =>{
+        setIsMulti(checked);
+    }
 
     const addNewCard = () => {
         setIsAdding(true);
     }
     const learnCard = (tag_id) => {
         Inertia.get(route('tags.learn', { tag: tag_id }))
+    }
+    const quizzeCard = (tag_id) => {
+        Inertia.get(route('tags.quizzes', { tag: tag_id }), {numQuizze: numQuizzes, isTrueFalse: isTrueFalse, isMulti: isMulti,})
     }
     const editTag = (tag_id) => {
         Inertia.get(route('tags.edit', { tag: tag_id }))
@@ -29,6 +61,56 @@ const ShowTag = ({ auth, mustVerifyEmail, status, ...props }) => {
             header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Profile</h2>}
         >
             <Head title="Show Tag" />
+            {modalVisible && (
+                <div className="modal-overlay">
+                    <div className="modal"> 
+                        <Button style={{position: 'absolute', top: '8px', right: '8px', borderColor: '#fff'}} onClick={closeModal}  icon={<CloseOutlined style={{ fontSize: '16px'}}/>}/>
+                        <div class='w-full p-3 flex justify-between'>
+                            <div class='flex flex-col space-y-10'>
+                                <div class='text-4xl font-medium'>{tagName}</div>
+                                <div class='text-xl font-normal'>Set up your test</div>
+                            </div>
+                            <TestIcon></TestIcon>
+                        </div>
+                        <div class='w-full p-3 flex justify-between'>
+                            <div class='text-xl font-normal'>Question</div>
+                            <InputNumber min={1} max={0 + (isTrueFalse ? flashcardsLength : 0)+(isMulti ? flashcardsLength*2 : 0)} defaultValue={1} onChange={onChangeNumberQuizzes} />
+                        </div>
+                        <div class='w-full p-3 flex justify-between'>
+                            <div class='text-xl font-normal'>Answer with</div>
+                            <Select
+                            defaultValue="Japanese"
+                            style={{
+                                width: 120,
+                            }}
+                            onChange={handleChangeAnswerBy}
+                            options={[
+                                {
+                                value: 'Japanese',
+                                label: 'Japanese',
+                                },
+                                {
+                                value: 'Vietnamese',
+                                label: 'Vietnamese',
+                                },
+                            ]}
+                            />
+                        </div>
+                        <div className="full-width-line mt-2"></div>
+                        <div class='w-full p-3 flex justify-between'>
+                            <div class='text-xl font-normal'>True/False</div>
+                            <Switch defaultChecked onChange={onChangeTrueFalse} />
+                        </div>
+                        <div class='w-full p-3 flex justify-between'>
+                            <div class='text-xl font-normal'>Multiple Choice</div>
+                            <Switch defaultChecked onChange={onChangeMultichoice} />
+                        </div>
+                        <div class='flex justify-end'>
+                            <Button onClick={() => {quizzeCard(props.tag.tag_id)}}class="drop-shadow-lg ">Start Test</Button>
+                        </div>
+                    </div>
+                </div>
+            )}
             <div className="py-4">
                 <div className="w-full mx-auto sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center mb-8 py-3 px-4 bg-white overflow-hidden border-b-2 border-slate-300">
@@ -51,6 +133,20 @@ const ShowTag = ({ auth, mustVerifyEmail, status, ...props }) => {
                     <div className='text-xl pt-6 flex justify-between'>
                         <div className='tracking-wide font-bold py-5'>Flashcards list: </div>
                         <div className='flex gap-4'> 
+                            <div className='flex items-center gap-2'>
+                                <Tooltip title="Quizzes">
+                                    <Button 
+                                        type="default" 
+                                        icon={<QuestionCircleOutlined style={{ fontSize: '24px',  color: "#0284c7"}}/>} 
+                                        size={"large"}
+                                        style={{ boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)', fontWeight: 'bold' }}
+                                        onClick={showModel}
+                                    >
+                                    Quizzes
+                                    </Button>
+                                </Tooltip>
+                                
+                            </div>
                             <div className='flex items-center gap-2'>
                                 <Tooltip title="Learn Flashcards">
                                     <Button 
