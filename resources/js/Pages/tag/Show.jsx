@@ -113,8 +113,8 @@ const ShowTag = ({ auth, mustVerifyEmail, status, ...props }) => {
             )}
             <div className="py-4">
                 <div className="w-full mx-auto sm:px-6 lg:px-8">
-                    <div className="flex justify-between items-center mb-8 py-3 px-4 bg-white overflow-hidden border-b-2 border-slate-300">
-                        <h3 className="text-2xl leading-6 font-medium text-gray-900">
+                    <div className="flex justify-between items-center mb-8 py-3 px-2 overflow-hidden border-b-2 border-slate-300">
+                        <h3 className="text-4xl leading-6 font-medium" style={{fontWeight: 700}}>
                             Tag Detail
                         </h3>
                         <div className='flex gap-2 bg-blue-300 px-3 py-1 rounded cursor-pointer' onClick={() => {editTag(props.tag.tag_id)}}>
@@ -160,7 +160,25 @@ const ShowTag = ({ auth, mustVerifyEmail, status, ...props }) => {
                                     </Button>
                                 </Tooltip>
                                 
-                            </div>
+                        </div>
+
+                        <div className='flex gap-2 bg-blue-300 px-3 py-1 rounded cursor-pointer' onClick={() => {editTag(props.tag.tag_id)}}>
+                            <EditOutlined className="text-xl" />
+                            <div className='text-lg'>Edit</div>
+                        </div>
+                        </div>
+                    </div>
+                    <div className='text-2xl px-2'>
+                        <div className='tracking-wide font-semibold py-5' style={{fontWeight: 700}}>Title: </div>
+                        <div className='border-b-2 border-slate-300 w-1/4'>{props.tag.tag_name}</div>
+                    </div>
+                    <div className='text-2xl px-2'>
+                        <div className='tracking-wide font-bold py-5' style={{fontWeight: 700}}>Description: </div>
+                        <div className='border-b-2 border-slate-300 w-1/4'>{props.tag.description}</div>
+                    </div>
+                    <div className='text-2xl pt-6 flex justify-between'>
+                        <div className='tracking-wide py-5' style={{fontWeight: 700}}>Flashcards list: </div>
+                        <div className='flex gap-4'> 
                             <div className='flex items-center gap-2'>
                                 <Tooltip title="Add Card">
                                     <Button 

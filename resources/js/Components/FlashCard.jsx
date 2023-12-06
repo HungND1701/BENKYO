@@ -1,11 +1,12 @@
 import {React, useState} from 'react';
-import { Col, Modal } from 'antd';
+import { Col, Modal, Tooltip } from 'antd';
 import { EyeOutlined, PlusOutlined, UnorderedListOutlined, DeleteOutlined } from '@ant-design/icons';
 import { Inertia } from '@inertiajs/inertia'
 import {Input, Button, message, Upload} from 'antd';
 
 const style = {
     boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
+    backgroundColor: '#3d5c98'
 };
 
 function extractDateFromString(dateString) {
@@ -41,6 +42,7 @@ const Flashcard = ({tag, flashcard, ...props}) => {
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
     const [previewTitle, setPreviewTitle] = useState('');
+
     const [fileList, setFileList] = useState([
     ]);
         const handleWordDoubleClick = () => {
@@ -170,10 +172,10 @@ const Flashcard = ({tag, flashcard, ...props}) => {
 
     return (
         <Col className="gutter-row mt-3 mb-2 pt-4">
-            <div style={style} className={'h-min rounded-md bg-blue-300 pt-4'}>
-                <div className='flex py-1 px-4 border-b border-black text-xl text-black font-semibold justify-between'>
+            <div style={style} className={'h-min rounded-md pt-4'}>
+                <div className='flex py-1 px-4 border-b border-white text-xl text-black font-semibold justify-between'>
                     <div>
-                        <div className='text-xl'>
+                        <div className='text-xl text-white'>
                             {flashcard.order}
                         </div>
                         <div>
@@ -195,11 +197,13 @@ const Flashcard = ({tag, flashcard, ...props}) => {
                             { showMore ? 
                             <div className='flex text-base gap-3 bg-yellow-500 px-3 rounded'>
                                 <div>learn_points: {flashcard.learn_points}</div> |
-                                <div>created_at: {extractDateFromString(flashcard.created_at)}</div> |
-                                <div>updated_at: {extractDateFromString(flashcard.updated_at)}</div>
+                                <div>created at: {extractDateFromString(flashcard.created_at)}</div> |
+                                <div>updated at: {extractDateFromString(flashcard.updated_at)}</div>
                             </div> : ""
                             }
-                            <UnorderedListOutlined className='cursor-pointer' onClick={() => {setShowMore(prev => !prev)}}/>
+                            <Tooltip title="see more">
+                                <UnorderedListOutlined className='cursor-pointer' style={{color: '#fff'}} onClick={() => {setShowMore(prev => !prev)}}/>
+                            </Tooltip>
                             <div className='bg-red-500 py-1 px-2 rounded' onClick={deleteFlashCard}>
                                 <DeleteOutlined className='font-bold cursor-pointer'/>
                             </div>
@@ -208,37 +212,39 @@ const Flashcard = ({tag, flashcard, ...props}) => {
                 </div>
                 <div className='flex text-black font-bold text-base px-2.5 gap-4 flex-start pt-6'>
                     <div className='w-2/4'>
-                        <div className={"text-lg" + (isWordEditing ? " border-b-4" : " border-b-2") + (isWordEditing ? " border-yellow-600" : " border-black") + " h-10"} onDoubleClick={handleWordDoubleClick} >
+                        <div className={"text-lg" + (isWordEditing ? " border-b-4" : " border-b-2") + (isWordEditing ? " border-yellow-600" : " border-white") + " h-10"} onDoubleClick={handleWordDoubleClick} >
                             {
                                 isWordEditing ? <Input bordered={false}  
                         style={{
-                            backgroundColor: "#93c5fd",
+                            backgroundColor: "#3d5c98",
                             height: "95%",
                             fontSize: "large",
-                            outline: "none"
+                            outline: "none",
+                            color: '#fff'
                         }}
                         value={word}
                         onChange={handleWordChange}
-                        /> : <div className='pl-3 pt-1'>{word}</div>
+                        /> : <div className='pl-3 pt-1 text-white'>{word}</div>
                             }
                         </div>
-                        <div className='pl-3 pt-2'>Thuật ngữ</div>
+                        <div className='pl-3 pt-2 text-white'>Thuật ngữ</div>
                     </div>
                     <div className='w-2/5'>
-                        <div className={"text-lg" + (isMeaningEditing ? " border-b-4" : " border-b-2") + (isMeaningEditing ? " border-yellow-600" : " border-black") + " h-10"} onDoubleClick={handleMeaningDoubleClick} >
+                        <div className={"text-lg" + (isMeaningEditing ? " border-b-4" : " border-b-2") + (isMeaningEditing ? " border-yellow-600" : " border-white") + " h-10"} onDoubleClick={handleMeaningDoubleClick} >
                         {
                             isMeaningEditing ? <Input bordered={false}  
                         style={{
-                            backgroundColor: "#93c5fd",
+                            backgroundColor: "#3d5c98",
                             height: "95%",
-                            outline: "none"
+                            outline: "none",
+                            color: '#fff'
                         }}
                         value={meaning}
                         onChange={handleMeaningChange}
-                        /> : <div className='pl-3 pt-1'>{meaning}</div>
+                        /> : <div className='pl-3 pt-1 text-white'>{meaning}</div>
                         }
                         </div>
-                        <div className='pl-3 pt-2'>Định nghĩa</div>
+                        <div className='pl-3 pt-2 text-white'>Định nghĩa</div>
                     </div>
                     <div>
 

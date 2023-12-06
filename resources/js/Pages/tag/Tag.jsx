@@ -6,6 +6,7 @@ import { Inertia } from '@inertiajs/inertia'
 const style = {
     padding: '8px 0',
     boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px',
+    backgroundColor: '#1d4c88',
 };
 
 const Tag = ({tag, ...props}) => {

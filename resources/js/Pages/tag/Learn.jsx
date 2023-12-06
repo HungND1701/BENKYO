@@ -1,8 +1,8 @@
 import {React, useState, useEffect} from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
-import { Button, Card} from 'antd';
-import { StarOutlined, PlayCircleOutlined, PauseCircleOutlined, ArrowRightOutlined, ArrowLeftOutlined ,SwapOutlined} from '@ant-design/icons';
+import { Button, Modal, InputNumber} from 'antd';
+import { StarFilled , PlayCircleOutlined, PauseCircleOutlined, ArrowRightOutlined, ArrowLeftOutlined ,SwapOutlined, SettingFilled} from '@ant-design/icons';
 import { Inertia } from '@inertiajs/inertia';
 import axios from "axios";
 
@@ -21,6 +21,9 @@ const LearnTag = ({ auth, mustVerifyEmail, status, ...props }) => {
     const [isReturn, setIsReturn] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
     const [isFavourite, setIsFavourite] = useState(card.is_favourite);
+    const [settingOpen, setSettingOpen] = useState(false);
+    const [transferTime, setTransferTime] = useState(3000);
+    const [tempTransferTime, setTempTransferTime] = useState(3000);
 
     const startPlaying = () => {
         setIsPlaying(true);
@@ -42,7 +45,7 @@ const LearnTag = ({ auth, mustVerifyEmail, status, ...props }) => {
                 setTimeout(() => {
                     handleClick(); 
                 }, 1500);
-            }, 3000);
+            }, transferTime);
         }
         return () => {
             // Dừng các tài nguyên hoặc vòng lặp khi component bị unmounted hoặc isPlaying thay đổi
@@ -161,12 +164,28 @@ const LearnTag = ({ auth, mustVerifyEmail, status, ...props }) => {
             header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Learn Flashcards</h2>}
         >
             <Head title="Learn Flashcards" />
+            <Modal
+                title="Settings"
+                centered
+                open={settingOpen}
+                onOk={() => {setSettingOpen(false); setTransferTime(tempTransferTime)}}
+                onCancel={() => setSettingOpen(false)}
+                width={420}
+            >
+                <div style={{display: 'flex', alignItems: 'center', justifyContent:'space-between', marginTop: '10px'}}>
+                    <div style={{fontWeight: 600}}>Transfer time: </div>
+                    <InputNumber addonBefore="+" addonAfter="ms" defaultValue={transferTime} onChange={(value) => {
+                        setTempTransferTime(value);
+                }}/>
+                </div>
+            </Modal>
             <div className="py-4">
                 <div className="w-full mx-auto sm:px-6 lg:px-8">
-                    <div className="mb-8 py-3 px-4 bg-white overflow-hidden border-b-2 border-slate-300">
+                    <div className="mb-8 overflow-hidden" style={{marginBottom: 50, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px 420px'}}>
                         <h3 className="text-2xl leading-6 font-medium text-gray-900">
-                            Learn Tag: <div className='inline-block font-semibold text-blue-500 ml-4'>{tagName}</div>
+                            <div className='inline-block font-semibold' style={{color: '#1a1d28', fontSize: 40, fontWeight: 700}}>{tagName}</div>
                         </h3>
+                        <Button style={{width: '50px', height: '45px', backgroundColor: '#3d5c98', padding: '9px 0'}} icon={<SettingFilled style={{fontSize: '24px', color: '#fff'}}/>} onClick={() => {setSettingOpen(true)}}/>
                     </div>
                     <div class='w-full flex items-center justify-center'>
                         <div class='container'>
@@ -174,30 +193,30 @@ const LearnTag = ({ auth, mustVerifyEmail, status, ...props }) => {
                                 <div class='rounded-lg frontCard' >
                                     <Button style={{position: 'absolute', top: '12px', right: '12px', borderColor: '#fff'}} onClick={isFavourite ? unlike : like}  icon={<StarOutlined style={{ fontSize: '24px', color: isFavourite ? 'yellow' : 'gray' }}/>}/>
                                     <div style={{ fontSize: '20px', position: 'absolute', top: '12px', left: '18px' }}>{index+1}</div>
-                                    <p class='font-medium text-3xl my-auto'>{wordCard}</p>
-                                    <div class='w-full rounded-b-lg pt-1' style={{position: 'absolute',height: 35, bottom: '0px', left: '0px', textAlign: 'center', backgroundColor: '#B2E3FA'}}>
-                                        <p class='font-normal text-xl text-gray-500'>Click the card to flip it</p>
+                                    <p class='font-medium text-3xl my-auto' style={{fontSize: '28px'}}>{wordCard}</p>
+                                    <div class='w-full rounded-b-lg pt-1' style={{position: 'absolute',height: 35, bottom: '0px', left: '0px', textAlign: 'center', backgroundColor: '#3d5c98', color: '#fff'}}>
+                                        <p class='font-normal text-xl text-white'>Click the card to flip it</p>
                                     </div>
                                 </div>
                                 <div class='rounded-lg backCard' >
                                 <Button style={{position: 'absolute', top: '12px', right: '12px', borderColor: '#fff'}} onClick={isFavourite ? unlike : like}  icon={<StarOutlined style={{ fontSize: '24px', color: isFavourite ? 'yellow' : 'gray' }}/>}/>
                                     <div style={{ fontSize: '20px', position: 'absolute', top: '12px', left: '18px' }}>{index+1}</div>
                                     <p class='font-medium text-3xl my-auto'>{meaningCard}</p>
-                                    <div class='w-full rounded-b-lg pt-1' style={{position: 'absolute',height: 35, bottom: '0px', left: '0px', textAlign: 'center', backgroundColor: '#B2E3FA'}}>
-                                        <p class='font-normal text-xl text-gray-500'>Click the card to flip it</p>
+                                    <div class='w-full rounded-b-lg pt-1' style={{position: 'absolute',height: 35, bottom: '0px', left: '0px', textAlign: 'center', backgroundColor: '#3d5c98', color: '#fff'}}>
+                                        <p class='font-normal text-xl text-white'>Click the card to flip it</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class='w-full flex items-center justify-center'>
-                        <div className='pt-8 px-2 flex justify-between' style={{width: 500, fontSize: '24px'}}>
-                            <Button onClick={isPlaying ? stopPlaying : startPlaying} icon={isPlaying ? <PauseCircleOutlined style={{fontSize: '24px'}}/> : <PlayCircleOutlined style={{fontSize: '24px'}}/>}/>
+                        <div className='pt-10 px-2 flex justify-between' style={{width: '45vw' , fontSize: '24px', paddingTop: 50}}>
+                            <Button style={{width: '80px', height: '45px', backgroundColor: '#3d5c98', padding: '7px 0'}} onClick={isPlaying ? stopPlaying : startPlaying} icon={isPlaying ? <PauseCircleOutlined style={{fontSize: '30px', color: '#fff'}}/> : <PlayCircleOutlined style={{fontSize: '30px', color: '#fff'}}/>}/>
                             <div class='flex space-x-5'>
-                                <Button onClick={() => {prevCard()}}  icon={<ArrowLeftOutlined style={{fontSize: '24px'}}/>}/>
-                                <Button onClick={() => {nextCard()}} icon={<ArrowRightOutlined style={{fontSize: '24px'}}/>}/>
+                                <Button style={{width: '50px', height: '45px', backgroundColor: '#3d5c98', padding: '7px 0'}} onClick={() => {prevCard()}}  icon={<ArrowLeftOutlined style={{fontSize: '24px', color: '#fff'}}/>}/>
+                                <Button style={{width: '50px', height: '45px', backgroundColor: '#3d5c98', padding: '7px 0'}}onClick={() => {nextCard()}} icon={<ArrowRightOutlined style={{fontSize: '24px', color: '#fff'}}/>}/>
                             </div>
-                            <Button onClick={() => {swapCard()}} icon={<SwapOutlined style={{fontSize: '24px'}}/>}/>
+                            <Button style={{width: '80px', height: '45px', backgroundColor: '#3d5c98', padding: '7px 0'}} onClick={() => {swapCard()}} icon={<SwapOutlined style={{color: '#fff', fontSize: '24px'}}/>}/>
                         </div>
                     </div>
                 </div>

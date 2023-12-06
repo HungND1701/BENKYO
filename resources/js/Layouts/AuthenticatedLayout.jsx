@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
-import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { router } from '@inertiajs/react';
 import { Select, Button, Badge } from 'antd';
@@ -11,12 +10,6 @@ import {
     MenuUnfoldOutlined,
     MenuFoldOutlined,
     FileTextOutlined,
-    ProjectOutlined,
-    CalendarOutlined,
-    UserOutlined,
-    ExperimentOutlined,
-    AppstoreOutlined,
-    NotificationOutlined
 } from '@ant-design/icons';
 
 const { Header, Content, Sider } = Layout;
@@ -24,6 +17,7 @@ const { Header, Content, Sider } = Layout;
 export default function Authenticated({ user, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
     const [collapsed, setCollapsed] = useState(false);
+    const [selected, setSelected] = useState(localStorage.getItem('selected'));
 
     const navbarItem = [
         {
@@ -34,8 +28,8 @@ export default function Authenticated({ user, children }) {
     ];
 
     return (
-        <Layout hasSider>
-            <Sider
+        <Layout >
+            {/* <Sider
                 style={{
                     overflow: 'auto',
                     height: '100vh',
@@ -50,34 +44,69 @@ export default function Authenticated({ user, children }) {
             >
                 <div className="demo-logo-vertical"></div>
                 <Menu theme="light" mode="inline" items={navbarItem} onSelect={({ item, key }) => { router.get(route(key)); }} />
-            </Sider>
+            </Sider> */}
             <Layout
                 className="site-layout"
                 style={{
-                    marginLeft: collapsed ? '80px' : '200px',
+                    // marginLeft: collapsed ? '80px' : '200px',
+                    margin: '0',
                     transition: 'margin-left 0.3s',
                     height: '100vh',
                 }}
             >   
                 <Header
                     style={{
-                        paddingRight: 30,
-                        paddingLeft: 0,
+                        padding: '10px 30p 10px',
                         background: '#fff',
                         display: 'flex',
-                        justifyContent: 'space-between'
+                        justifyContent: 'space-between',
+                        height: 70,
                     }}
-                >
-                    <Button
-                        type="text"
-                        icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-                        onClick={() => setCollapsed(!collapsed)}
-                        style={{
-                            fontSize: '16px',
-                            width: 64,
-                            height: 64,
-                        }}
-                    />
+                >   
+                    <div style={{display: 'flex', justifyContent: 'start', gap: 50}}>
+                        <Button
+                            type="text"
+                            onClick={() => {
+                                router.get('/dashboard'); 
+                                setSelected('dashboard')
+                                localStorage.removeItem('selected');
+                                localStorage.setItem('selected', 'dashboard');
+                                }
+                            }
+                            style={{
+                                height: 70,
+                                color: '#1a1d28',
+                                fontWeight: 700,
+                                fontSize: 26,
+                                letterSpacing: 0.5,
+                            }}
+                        >
+                            BENKYO
+                        </Button>
+                        <Button
+                            type="text"
+                            onClick={() => {
+                                router.get('tags'); setSelected('tags')
+                                setSelected('tags')
+                                localStorage.removeItem('selected');
+                                localStorage.setItem('selected', 'tags');
+                            }}
+                            style={{
+                                fontSize: '16px',
+                                height: 70,
+                                color: '#1a1d28',
+                                fontWeight: 700,
+                                fontSize: 21,
+                                letterSpacing: 0.5,
+                                borderRadius: 0,
+                                borderBottomColor: selected === 'tags' ? '#1a1d28' : '#fff',
+                                borderBottomWidth: 3
+                            }}
+                            icon= {<FileTextOutlined />}
+                        >
+                            Tags
+                        </Button>
+                    </div>
                     <div className="hidden sm:flex sm:items-center sm:ms-6">
                         <div className="ms-3 relative">
                             <Dropdown>
@@ -165,11 +194,12 @@ export default function Authenticated({ user, children }) {
                 </Header>
                 <Content
                     style={{
-                        margin: '24px 16px',
                         padding: 24,
+                        paddingTop: 40,
                         minHeight: 280,
-                        background: '#fff',
+                        backgroundColor: '#f6f7fb',
                         overflow: 'scroll',
+                        borderRadius: 5
                     }}
                 >
                     <main>{children}</main>
