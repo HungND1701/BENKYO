@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\FlashcardController;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -31,11 +33,11 @@ Route::get(
     }
 );
 
-Route::get(
-    '/dashboard', function () {
-        return Inertia::render('Dashboard');
-    }
-)->middleware([])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware([])->name('dashboard');
+Route::get('/dashboard/{startDate}/{endDate}', [DashboardController::class, 'getData'])->name('dashboard.getData');
+Route::get('/notification', [NotificationController::class, 'index'])->name('notification');
+Route::post('/notification', [NotificationController::class, 'read'])->name('notification.read');
+
 
 Route::middleware('auth')->group(
     function () {
