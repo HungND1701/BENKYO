@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
@@ -11,6 +11,8 @@ import {
     MenuFoldOutlined,
     FileTextOutlined,
 } from '@ant-design/icons';
+import axios from 'axios';
+import NotificationContent from '@/Pages/NotificationContent';
 
 const { Header, Content, Sider } = Layout;
 
@@ -108,7 +110,8 @@ export default function Authenticated({ user, children }) {
                         </Button>
                     </div>
                     <div className="hidden sm:flex sm:items-center sm:ms-6">
-                        <div className="ms-3 relative">
+                        <NotificationContent />
+                        <div className="ms-10 relative">
                             <Dropdown>
                                 <Dropdown.Trigger>
                                     <span className="inline-flex rounded-md">
