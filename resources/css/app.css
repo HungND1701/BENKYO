@@ -113,3 +113,7 @@ justify-content: center;
     background-color: rgb(205, 205, 205); /* Set the color of the line */
 }
 
+.ant-modal-footer .ant-btn {
+    background-color: #3d5c98;
+    color: #fff;
+}
