@@ -3,7 +3,29 @@ import { Pie } from 'react-chartjs-2';
 
 export default function PieChart({learned, learning, notlearn}){
     ChartJS.register(ArcElement, Tooltip, Legend);
-    const data = {
+    const noData = !learned && !learning && !notlearn;
+    if(noData){
+      const data1 = {
+
+      }
+      return (
+        <div>
+            <div id='div1' style={{ 
+                display: 'flex', 
+                justifyContent: 'center', 
+                alignItems: 'center', 
+                width: '300px', 
+                height: '300px', 
+                borderRadius: '50%', 
+                backgroundColor: '#ccc' 
+            }}>
+                Không có dữ liệu
+            </div>
+        </div>
+      );
+    }
+    else{
+      const data = {
         labels: ['Đã học', 'Đang học', 'Chưa học'],
         datasets: [
           {
@@ -33,4 +55,5 @@ export default function PieChart({learned, learning, notlearn}){
     };
 
     return <Pie data={data} options={options} />;
+    }
 }

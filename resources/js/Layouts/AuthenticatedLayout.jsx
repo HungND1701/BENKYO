@@ -10,6 +10,7 @@ import {
     MenuUnfoldOutlined,
     MenuFoldOutlined,
     FileTextOutlined,
+    RedoOutlined,
 } from '@ant-design/icons';
 import axios from 'axios';
 import NotificationContent from '@/Pages/NotificationContent';
@@ -107,6 +108,29 @@ export default function Authenticated({ user, children }) {
                             icon= {<FileTextOutlined />}
                         >
                             Tags
+                        </Button>
+                        <Button
+                            type="text"
+                            onClick={() => {
+                                router.get('repeat'); setSelected('repeat')
+                                setSelected('repeat')
+                                localStorage.removeItem('selected');
+                                localStorage.setItem('selected', 'repeat');
+                            }}
+                            style={{
+                                fontSize: '16px',
+                                height: 70,
+                                color: '#1a1d28',
+                                fontWeight: 700,
+                                fontSize: 21,
+                                letterSpacing: 0.5,
+                                borderRadius: 0,
+                                borderBottomColor: selected === 'repeat' ? '#1a1d28' : '#fff',
+                                borderBottomWidth: 3
+                            }}
+                            icon= {<RedoOutlined />}
+                        >
+                            Repeat
                         </Button>
                     </div>
                     <div className="hidden sm:flex sm:items-center sm:ms-6">
