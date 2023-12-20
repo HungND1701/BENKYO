@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\FlashcardController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\RepeatController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -38,6 +39,8 @@ Route::get('/dashboard/{startDate}/{endDate}', [DashboardController::class, 'get
 Route::get('/notification', [NotificationController::class, 'index'])->name('notification');
 Route::post('/notification', [NotificationController::class, 'read'])->name('notification.read');
 
+Route::get('/repeat', [RepeatController::class, 'index'])->name('repeat.index');
+
 
 Route::middleware('auth')->group(
     function () {
@@ -60,5 +63,6 @@ Route::delete('/flashcards/{flashcard}', [FlashcardController::class, 'destroy']
 Route::put('/flashcards/{flashcard}', [FlashcardController::class, 'update'])->name('flashcards.update');
 Route::put('/flashcards/favourite/{flashcard}', [FlashcardController::class, 'addFavourite'])->name('flashcards.addFavourite');
 Route::post('/flashcards', [FlashcardController::class, 'store'])->name('flashcards.store');
+Route::patch('/flashcards/{card_id}', [FlashcardController::class, 'updateLearnPoint'])->name('flashcards.updateLearnPoint');
 
 require __DIR__.'/auth.php';
