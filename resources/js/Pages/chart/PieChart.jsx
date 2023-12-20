@@ -1,5 +1,5 @@
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { Pie } from 'react-chartjs-2';
+import { Doughnut } from 'react-chartjs-2';
 
 export default function PieChart({learned, learning, notlearn}){
     ChartJS.register(ArcElement, Tooltip, Legend);
@@ -30,7 +30,7 @@ export default function PieChart({learned, learning, notlearn}){
         datasets: [
           {
             label: 'Số từ',
-            data: [learned, learning, notlearn],
+            data: [10, 20, 30],
             backgroundColor: [
               'rgba(255, 99, 132, 0.2)',
               'rgba(54, 162, 235, 0.2)',
@@ -54,6 +54,5 @@ export default function PieChart({learned, learning, notlearn}){
         },
     };
 
-    return <Pie data={data} options={options} />;
-    }
+    return <Doughnut data={data} options={options} />;
 }

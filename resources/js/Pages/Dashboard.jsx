@@ -1,7 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import LineChart from './chart/LineChart';
-import PieChart from '@/Pages/chart/PieChart';
+import PieChart from './chart/PieChart';
 import BarChart from './chart/BarChart';
 import { Inertia } from '@inertiajs/inertia'
 import dayjs from 'dayjs';
@@ -12,7 +12,7 @@ import axios from 'axios';
 
 export default function Dashboard({ auth, ...props }) {
     const [dates, setDates] = useState(props.dates)
-    console.log(dates)
+    console.log(props)
     const [amounts, setAmounts] = useState(props.amounts)
     const amount_day_filled = dates.map(date => {
         const amount = amounts.find(amount => amount.date === date);
