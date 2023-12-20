@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateFlashcardRequest;
 use App\Http\Requests\AddFlashcardRequest;
 use Illuminate\Support\Facades\DB;
 use Exception;
+use Carbon\Carbon;
 
 class FlashcardController extends Controller
 {
@@ -108,29 +109,22 @@ class FlashcardController extends Controller
     {
         $card_id = $request->card_id;
         $point = $request->validate(['learn_point' => 'required|integer']);
-        if($point['learn_point'] >= 1 && $point['learn_point'] < 5){
+        if($point['learn_point'] >= 1 && $point['learn_point'] < 20){
             DB::table('history')
-            ->insert([
-                'learned_amount' => 0,
-                'learning_amount' => 1,
-                'not_learn_amount' => 0,
-                'user_id' => auth()->user()->id,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-        }
-        elseif($point['learn_point'] > 5){
+                ->where(DB::raw('DATE(created_at)'), Carbon::today()->toDateString())
+                ->increment('learning_amount');
             DB::table('history')
-            ->insert([
-                'learned_amount' => 1,
-                'learning_amount' => 0,
-                'not_learn_amount' => 0,
-                'user_id' => auth()->user()->id,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
+                ->where(DB::raw('DATE(created_at)'), Carbon::today()->toDateString())
+                ->decrement('not_learn_amount');
         }
-
+        elseif($point['learn_point'] >= 20){
+            DB::table('history')
+                ->where(DB::raw('DATE(created_at)'), Carbon::today()->toDateString())
+                ->increment('learned_amount');
+            DB::table('history')
+                ->where(DB::raw('DATE(created_at)'), Carbon::today()->toDateString())
+                ->decrement('learning_amount');
+        }
         try{
             DB::table('flashcards')
                 ->where('card_id', $card_id)

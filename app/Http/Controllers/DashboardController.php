@@ -7,12 +7,29 @@ use Inertia\Inertia;
 use Inertia\Response;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use App\Models\Flashcard;
 
 class DashboardController extends Controller
 {
     public function index(Request $request): Response
     {
         $auth = auth()->user();
+        $flashcardCount = Flashcard::where('learn_points', 0)->count();
+        $exists = DB::table('history')
+        ->where(DB::raw('DATE(created_at)'), Carbon::today()->format('Y-m-d'))
+        ->exists();
+
+        if (!$exists) {
+            DB::table('history')
+            ->insert([
+                'learned_amount' => 0,
+                'learning_amount' => 0,
+                'not_learn_amount' => $flashcardCount,
+                'user_id' => auth()->user()->id,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
 
         Carbon::setTestNow(Carbon::now('Asia/Ho_Chi_Minh'));
         date_default_timezone_set('Asia/Ho_Chi_Minh');

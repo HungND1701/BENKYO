@@ -16,7 +16,7 @@ export default function Dashboard({ auth, ...props }) {
     const [amounts, setAmounts] = useState(props.amounts)
     const amount_day_filled = dates.map(date => {
         const amount = amounts.find(amount => amount.date === date);
-        return amount ? parseInt(amount.total_learned_amount) + parseInt(amount.total_learning_amount) + parseInt(amount.total_not_learn_amount) : 0;
+        return amount ? parseInt(amount.total_learned_amount) + parseInt(amount.total_learning_amount) : 0;
     });
     const totalLearnedAmount = amounts.reduce((sum, amount) => sum + parseInt(amount.total_learned_amount), 0);
     const totalLearningAmount = amounts.reduce((sum, amount) => sum + parseInt(amount.total_learning_amount), 0);
