@@ -45,9 +45,9 @@ export default function BarChart({dates, learned, learning, notlearn}){
         labels,
         datasets: [
           {
-            label: 'Đã học',
-            data: learned,
-            backgroundColor: 'rgb(255, 99, 132)',
+            label: 'Chưa học',
+            data: notlearn,
+            backgroundColor: 'rgb(53, 162, 235)',
           },
           {
             label: 'Đang học',
@@ -55,9 +55,9 @@ export default function BarChart({dates, learned, learning, notlearn}){
             backgroundColor: 'rgb(75, 192, 192)',
           },
           {
-            label: 'Chưa học',
-            data: notlearn,
-            backgroundColor: 'rgb(53, 162, 235)',
+            label: 'Đã học',
+            data: learned,
+            backgroundColor: 'rgb(255, 99, 132)',
           },
         ],
     };
