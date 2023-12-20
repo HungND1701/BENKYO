@@ -142,10 +142,21 @@ const QuizzesTag = ({ auth, mustVerifyEmail, status, ...props }) => {
         // Xử lý logic khi click đúng
         setChoiceIndex(index);
         setRunning(true);
+        axios.patch(route('flashcards.updateLearnPoint', {card_id: card.card_id}),
+        {
+            learn_point: card.learn_points + 4
+        })
+        .then((response) => {
+            console.log(response)
+        })
+        .catch((error) => {
+            console.error(error);
+        });
         const newTimeoutId = setTimeout(() => {
             nextQuizze();
         }, 1500);
-        setTimeoutId(newTimeoutId);    
+        setTimeoutId(newTimeoutId);
+
     };
 
     const clickWrong = (index) => {

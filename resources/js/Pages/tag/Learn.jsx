@@ -54,7 +54,19 @@ const LearnTag = ({ auth, mustVerifyEmail, status, ...props }) => {
     }, [isPlaying]);
 
     const handleClick = () => {
-        if(!isClicked) setIsClicked(true);
+        if(!isClicked) {
+            setIsClicked(true);
+            axios.patch(route('flashcards.updateLearnPoint', {card_id: card.card_id}),
+            {
+                learn_point: card.learn_points + 1
+            })
+            .then((response) => {
+                console.log(response)
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+        }
         else setIsClicked(false);
     };
 

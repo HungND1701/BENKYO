@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import {Popover, Button, Badge} from 'antd';
 import { BellTwoTone } from '@ant-design/icons';
+import moment from 'moment';
+import { Tooltip } from 'antd';
 
 const NotificationContent = () => {
     const [notification, setNotification] = useState(null);
@@ -19,12 +21,18 @@ const NotificationContent = () => {
     }
 
     const content = (
-        <div style={{ width: '250px', height: '150px' }}>
+        <div style={{ width: '250px', height: '150px', maxHeight: '150px', overflowY: 'auto' }}>
             {notification && notification.map((notif, index) => (
-                <p key={index} style={{ fontWeight: notif.is_read === 0 ? 'bold' : 'normal', cursor: 'pointer'}} onClick={() => handleRead(index)}>
-                    {notif.content}
-                </p>
+                <div className='flex justify-between'>
+                <Tooltip title={notif.content}>
+                    <p key={index} style={{ fontWeight: notif.is_read === 0 ? 'bold' : 'normal', cursor: 'pointer'}} onClick={() => handleRead(index)}>
+                        {notif.content.length > 20 ? notif.content.substring(0, 20) + '...' : notif.content}
+                    </p>
+                </Tooltip>
+                <p>{moment(notif.created_at).fromNow()}</p>
+                </div>
             ))}
+            
         </div>
       );
 

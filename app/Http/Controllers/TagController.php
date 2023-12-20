@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\Tag;
+use App\Models\Flashcard;
 use Illuminate\Support\Facades\DB;
 use Exception;
 
@@ -83,6 +84,16 @@ class TagController extends Controller
     public function learn(Request $request): Response
     {   
         $tag = Tag::with('flashcards')->where('tag_id', (int)$request->tag)->get()->first();
+        $flashcardCount = Flashcard::where('tag_id', $tag->tag_id)->count();
+        DB::table('history')
+        ->insert([
+            'learned_amount' => 0,
+            'learning_amount' => 0,
+            'not_learn_amount' => $flashcardCount,
+            'user_id' => auth()->user()->id,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
         return Inertia::render(
             'tag/Learn', [
                 'tag' => $tag

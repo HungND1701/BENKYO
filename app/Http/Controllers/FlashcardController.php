@@ -103,4 +103,43 @@ class FlashcardController extends Controller
         return response()->json( DB::table('flashcards')
         ->where('card_id', $flashcard->card_id)->first());
     }
+
+    public function updateLearnPoint(Request $request)
+    {
+        $card_id = $request->card_id;
+        $point = $request->validate(['learn_point' => 'required|integer']);
+        if($point['learn_point'] >= 1 && $point['learn_point'] < 5){
+            DB::table('history')
+            ->insert([
+                'learned_amount' => 0,
+                'learning_amount' => 1,
+                'not_learn_amount' => 0,
+                'user_id' => auth()->user()->id,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+        elseif($point['learn_point'] > 5){
+            DB::table('history')
+            ->insert([
+                'learned_amount' => 1,
+                'learning_amount' => 0,
+                'not_learn_amount' => 0,
+                'user_id' => auth()->user()->id,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+
+        try{
+            DB::table('flashcards')
+                ->where('card_id', $card_id)
+                ->update([
+                    'learn_points' => $point['learn_point'],
+                ]);
+            return response()->json(['message' => 'Add success.', $card_id, $point], 200);
+        } catch (Exception $e) {
+            return response()->json(['message' => 'Not found.', $card_id, $point], 404);
+        }
+    }
 }
