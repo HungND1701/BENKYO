@@ -1,7 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import LineChart from './chart/LineChart';
-import PieChart from '@/Pages/chart/PieChart';
+import PieChart from './chart/PieChart';
 import BarChart from './chart/BarChart';
 import { Inertia } from '@inertiajs/inertia'
 import dayjs from 'dayjs';
@@ -12,7 +12,7 @@ import axios from 'axios';
 
 export default function Dashboard({ auth, ...props }) {
     const [dates, setDates] = useState(props.dates)
-    console.log(dates)
+    console.log(props)
     const [amounts, setAmounts] = useState(props.amounts)
     const amount_day_filled = dates.map(date => {
         const amount = amounts.find(amount => amount.date === date);
@@ -104,10 +104,10 @@ export default function Dashboard({ auth, ...props }) {
                     <BarChart dates={dates} learned={learnedAmounts} learning={learningAmounts} notlearn={notLearnAmounts} />
                 </div>
                 <div className="h-[40vh] w-[40vw]">
-                    <div className='h-[30vh] w-[40vw] border-solid border-2 border-indigo-600 mt-3'>
-                        <p>Bạn đang trong chuỗi {dates.length} ngày liên tiếp</p>
-                        <p>Trong khoảng {dateRange[0]} - {dateRange[1]}</p>
-                        <p>Bạn đã học được {totalLearnedAmount + totalLearningAmount} từ</p>
+                    <div className='h-[30vh] w-[40vw] mt-3 bg-gray bg-sky-200 rounded shadow-lg p-5'>
+                        <p className='text-lg mb-2 font-bold'>Bạn đang trong chuỗi {dates.length} ngày liên tiếp</p>
+                        <p className='text-lg mb-2 font-bold'>Trong thời gian {dateRange[0]} đến {dateRange[1]}</p>
+                        <p className='text-lg mb-2 font-bold'>Bạn đã học được <b className='text-red-600'>{totalLearnedAmount + totalLearningAmount}</b> từ</p>
                     </div>
                     <br />
                     <div>
