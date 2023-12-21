@@ -107,7 +107,7 @@ export default function Dashboard({ auth, ...props }) {
                     <div className='h-[30vh] w-[40vw] border-solid border-2 border-indigo-600 mt-3'>
                         <p>Bạn đang trong chuỗi {dates.length} ngày liên tiếp</p>
                         <p>Trong khoảng {dateRange[0]} - {dateRange[1]}</p>
-                        <p>Bạn đã học được {totalLearnedAmount + totalLearningAmount + totalNotLearnAmount} từ</p>
+                        <p>Bạn đã học được {totalLearnedAmount + totalLearningAmount} từ</p>
                     </div>
                     <br />
                     <div>
