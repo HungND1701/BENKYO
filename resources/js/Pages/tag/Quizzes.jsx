@@ -30,6 +30,14 @@ const QuizzesTag = ({ auth, mustVerifyEmail, status, ...props }) => {
     const [quizze, setQuizze] = useState(quizzes.length > 0 ? quizzes[index] : {});
     const [answerList , setAnswerList] = useState(quizzes.length > 0 ? quizzes[index].answer : []);
     const [timeoutId, setTimeoutId] = useState(null);
+    const [finish, setFinish] = useState(false);
+    const [trueAnswer, setTrueAnswer] = useState(0);
+
+    const finishTest = () => {
+        setFinish(true)
+        setRunning(false)
+        setPause(false)
+    }
 
     const createQuizzes = () => {
         for(let i = 1;i<=numQuizze;i++){
@@ -142,16 +150,7 @@ const QuizzesTag = ({ auth, mustVerifyEmail, status, ...props }) => {
         // Xử lý logic khi click đúng
         setChoiceIndex(index);
         setRunning(true);
-        axios.patch(route('flashcards.updateLearnPoint', {card_id: card.card_id}),
-        {
-            learn_point: card.learn_points + 4
-        })
-        .then((response) => {
-            console.log(response)
-        })
-        .catch((error) => {
-            console.error(error);
-        });
+        setTrueAnswer(prev => prev + 1)
         const newTimeoutId = setTimeout(() => {
             nextQuizze();
         }, 1500);
@@ -186,7 +185,7 @@ const QuizzesTag = ({ auth, mustVerifyEmail, status, ...props }) => {
 
     const nextQuizze = () => {
         const nextIndex = index+1;
-        if(nextIndex > numQuizze) finishTest();
+        if(nextIndex >= numQuizze) finishTest();
         else{
             setChoiceIndex(-1);
             setIndex(nextIndex);
@@ -222,7 +221,7 @@ const QuizzesTag = ({ auth, mustVerifyEmail, status, ...props }) => {
     }
 
     const divAnswers = answerList.map((element, index) => (
-        <div key={index} className={`w-full h-full rounded-xl drop-shadow-lg flex justify-center items-center text-xl font-semibold ${choiceIndex == -1 ? 'bg-orange-100 hover:bg-orange-200 hover:cursor-pointer' : index==correctAnswerIndex ? 'bg-green-300' : 'bg-red-300'}`} onClick={() =>(element===quizze.answerCorrect ? clickCorrect(index) : clickWrong(index))}>
+        <div key={index} className={`w-full h-full rounded-xl drop-shadow-lg flex justify-center items-center text-xl font-semibold ${choiceIndex == -1 ? 'bg-orange-100 hover:bg-orange-200 hover:cursor-pointer' : element===quizze.answerCorrect  ? 'bg-green-300' : 'bg-red-300'}`} onClick={() =>(element===quizze.answerCorrect ? clickCorrect(index) : clickWrong(index))}>
             {element}
         </div>
     ));
@@ -231,7 +230,7 @@ const QuizzesTag = ({ auth, mustVerifyEmail, status, ...props }) => {
         if (!isSwapped) {
             swapAnwser();
             let divAnswers = answerList.map((element, index) => (
-                <div key={index} className={`w-full h-full rounded-xl drop-shadow-lg flex justify-center items-center text-xl font-semibold ${choiceIndex == -1 ? 'bg-orange-100 hover:bg-orange-200 hover:cursor-pointer' : index==correctAnswerIndex ? 'bg-green-300' : 'bg-red-300'}`} onClick={
+                <div key={index} className={`w-full h-full rounded-xl drop-shadow-lg flex justify-center items-center text-xl font-semibold ${choiceIndex == -1 ? 'bg-orange-100 hover:bg-orange-200 hover:cursor-pointer' : element===quizze.answerCorrect  ? 'bg-green-300' : 'bg-red-300'}`} onClick={
                 () =>{ if (element===quizze.answerCorrect) { clickCorrect(index)} else { clickWrong(index)}
                     setRunning(true);
                 }
@@ -253,12 +252,11 @@ const QuizzesTag = ({ auth, mustVerifyEmail, status, ...props }) => {
                         <h3 className="text-2xl leading-6 font-bold text-gray-900" style={{fontSize: 30}}>
                             Quizzes of Tag: <div className='inline-block font-bold ml-4' style={{fontSize: 30}}>{tagName}</div>
                         </h3>
-                        <div className='text-2xl leading-6 font-bold text-gray-900'>
-                            Right answer: { 1 } / {numQuizze}
-                        </div>
+                        {!finish ? <div className='text-2xl leading-6 font-bold text-gray-900'>
+                            Right answer: { trueAnswer } / {numQuizze}
+                        </div> : ""}
                     </div>
-
-
+                    {!finish ? <div>
                         <div class='w-full flex items-center justify-center mt-8'>
                             <div class='w-3/4 rounded-xl drop-shadow-lg p-4 flex justify-center'>
                                 <div class='w-5/6 h-32 bg-slate-100 rounded-sm flex justify-center items-center rounded-xl' style={{boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px'}}>
@@ -280,7 +278,21 @@ const QuizzesTag = ({ auth, mustVerifyEmail, status, ...props }) => {
                                 </div>
                             </div>    
                         </div>
-                
+                    </div> : <div className='flex flex-col justify-center items-center mt-8'>
+                        <div className="w-full" style={{fontSize: 30, fontWeight: 700, textAlign: 'center', marginBottom: 30}}>
+                            Your Result
+                        </div>
+                        <div className="flex flex-col justify-center" style={{backgroundColor: "#fff", boxShadow: 'rgba(0, 0, 0, 0.35) 0px 5px 15px', width: 700, height: 300}}>
+                            <div className='flex justify-center gap-3'>
+                                <div style={{fontSize: 25, fontWeight: 600}}>Right Answers: </div>
+                                <div style={{fontSize: 25, fontWeight: 600}}>{trueAnswer}</div>
+                            </div>
+                            <div className='flex justify-center gap-3'>
+                                <div style={{fontSize: 25, fontWeight: 600}}>Total Questions: </div>
+                                <div style={{fontSize: 25, fontWeight: 600}}>{numQuizze}</div>
+                            </div>
+                        </div>
+                    </div>}
                 </div> 
                 {running ? <div className='flex justify-center mt-5'>
                     <Button icon={<PauseOutlined style={{ fontSize: '20px', color: '#fff'}}/>} style={{backgroundColor: '#3d5c98', padding: 10, width: 40, height: 40}} onClick={() => {pauseTimeout()}}/>
