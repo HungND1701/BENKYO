@@ -37,7 +37,7 @@ class Reminder extends Model
     {
         // Fill in a reminder you'd like to send in this function, either populated
         //  by a constant or from the database.
-        $reminder = "This is your daily reminder. Get it done!";
+        $reminder = "Dậy học đi ông cháu ơi, sắp thi rồi đó";
         $recipients = [
             [ 'to' => getenv('TO_NUMBER') ]
             // add additional recipients here, if necessary

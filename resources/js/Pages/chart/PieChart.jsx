@@ -55,4 +55,5 @@ export default function PieChart({learned, learning, notlearn}){
     };
 
     return <Doughnut data={data} options={options} />;
+    }
 }
