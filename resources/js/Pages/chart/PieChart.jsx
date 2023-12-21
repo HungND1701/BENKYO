@@ -30,7 +30,7 @@ export default function PieChart({learned, learning, notlearn}){
         datasets: [
           {
             label: 'Số từ',
-            data: [10, 20, 30],
+            data: [learned, learning, notlearn],
             backgroundColor: [
               'rgba(255, 99, 132, 0.2)',
               'rgba(54, 162, 235, 0.2)',

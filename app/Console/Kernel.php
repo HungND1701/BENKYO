@@ -6,6 +6,7 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Illuminate\Support\Facades\DB;
 use App\Models\Flashcard;
+use App\Models\User;
 
 class Kernel extends ConsoleKernel
 {
@@ -15,16 +16,18 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->call(function () {
-            $auth = auth()->user();
-            $flashcardCount = Flashcard::where('learn_points', 0)->count();
-            DB::table('notifications')->insert([
-                'content' => 'Hôm nay bạn còn '.$flashcardCount.' từ chưa học',
-                'is_read' => 0,
-                'user_id' => $auth->id,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-        })->daily();
+            $users = User::all();
+            foreach ($users as $user) {
+                $flashcardCount = Flashcard::where('learn_points', 0)->count();
+                DB::table('notifications')->insert([
+                    'content' => 'Hôm nay bạn còn '.$flashcardCount.' từ chưa học',
+                    'is_read' => 0,
+                    'user_id' => $user->id,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+        })->everyMinute();
     }
 
     /**
