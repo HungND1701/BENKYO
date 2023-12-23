@@ -100,9 +100,9 @@ const Tags = ({ auth, mustVerifyEmail, status, ...props }) => {
     return (
         <AuthenticatedLayout
             user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Profile</h2>}
+            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Tags</h2>}
         >
-            <Head title="Profile" />
+            <Head title="Tags" />
             <Modal title="New Tag" open={isAddModalOpen} onOk={handleAddOk} onCancel={handleAddCancel} footer={[]}>
                  <Form
                     name="basic"

@@ -12,6 +12,7 @@ import {
     FileTextOutlined,
     RedoOutlined,
 } from '@ant-design/icons';
+import { Inertia } from '@inertiajs/inertia';
 import axios from 'axios';
 import NotificationContent from '@/Pages/NotificationContent';
 
@@ -70,10 +71,10 @@ export default function Authenticated({ user, children }) {
                         <Button
                             type="text"
                             onClick={() => {
-                                router.get('/dashboard'); 
-                                setSelected('dashboard')
+                                setSelected('dashboard');
                                 localStorage.removeItem('selected');
                                 localStorage.setItem('selected', 'dashboard');
+                                router.get('/dashboard'); 
                                 }
                             }
                             style={{
@@ -89,10 +90,10 @@ export default function Authenticated({ user, children }) {
                         <Button
                             type="text"
                             onClick={() => {
-                                router.get('tags'); setSelected('tags')
-                                setSelected('tags')
+                                setSelected('tags');
                                 localStorage.removeItem('selected');
                                 localStorage.setItem('selected', 'tags');
+                                Inertia.get(route('tags.index'));
                             }}
                             style={{
                                 fontSize: '16px',
@@ -112,10 +113,10 @@ export default function Authenticated({ user, children }) {
                         <Button
                             type="text"
                             onClick={() => {
-                                router.get('repeat'); setSelected('repeat')
-                                setSelected('repeat')
+                                setSelected('repeat');
                                 localStorage.removeItem('selected');
                                 localStorage.setItem('selected', 'repeat');
+                                Inertia.get(route('repeat.index'));
                             }}
                             style={{
                                 fontSize: '16px',
