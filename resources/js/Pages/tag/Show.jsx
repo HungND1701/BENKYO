@@ -58,7 +58,7 @@ const ShowTag = ({ auth, mustVerifyEmail, status, ...props }) => {
     return (
         <AuthenticatedLayout
             user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Profile</h2>}
+            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Show Tag</h2>}
         >
             <Head title="Show Tag" />
             {modalVisible && (

@@ -211,7 +211,7 @@ const LearnTag = ({ auth, mustVerifyEmail, status, ...props }) => {
                                     </div>
                                 </div>
                                 <div class='rounded-lg backCard' >
-                                <Button style={{position: 'absolute', top: '12px', right: '12px', borderColor: '#fff'}} onClick={isFavourite ? unlike : like}  icon={<StarFilled style={{ fontSize: '24px', color: isFavourite ? 'yellow' : 'gray' }}/>}/>
+                                <Button style={{position: 'absolute', top: '12px', right: '12px', borderColor: '#fff'}} onClick={isFavourite ? unlike : like}  icon={<StarFilled style={{ fontSize: '24px', color: isFavourite ? '#d97706' : 'gray' }}/>}/>
                                     <div style={{ fontSize: '20px', position: 'absolute', top: '12px', left: '18px' }}>{index+1}</div>
                                     <p class='font-medium text-3xl my-auto'>{meaningCard}</p>
                                     <div class='w-full rounded-b-lg pt-1' style={{position: 'absolute',height: 35, bottom: '0px', left: '0px', textAlign: 'center', backgroundColor: '#3d5c98', color: '#fff'}}>
