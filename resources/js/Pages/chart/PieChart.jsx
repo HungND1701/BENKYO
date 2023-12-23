@@ -30,7 +30,7 @@ export default function PieChart({learned, learning, notlearn}){
         datasets: [
           {
             label: 'Số từ',
-            data: [10, 20, 30],
+            data: [learned, learning, notlearn],
             backgroundColor: [
               'rgba(255, 99, 132, 0.2)',
               'rgba(54, 162, 235, 0.2)',
@@ -47,12 +47,25 @@ export default function PieChart({learned, learning, notlearn}){
     };
 
     const options = {
-        plugins: {
-            legend: {
-                position: 'bottom', // Position the legend at the bottom
-            },
-        },
-    };
+      plugins: {
+          legend: {
+              position: 'bottom', // Position the legend at the bottom
+          },
+          tooltip: {
+              callbacks: {
+                  label: function(context) {
+                      var data = context.dataset.data;
+                      var total = data.reduce(function(previousValue, currentValue, currentIndex, array) {
+                          return previousValue + currentValue;
+                      });
+                      var currentValue = data[context.dataIndex];
+                      var percentage = Math.floor(((currentValue/total) * 100)+0.5);         
+                      return context.chart.data.labels[context.dataIndex] + ': ' + currentValue + ' (' + percentage + "%)";
+                  }
+              }
+          }
+      }
+  };
 
     return <Doughnut data={data} options={options} />;
     }
