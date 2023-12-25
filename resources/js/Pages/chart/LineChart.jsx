@@ -27,7 +27,7 @@ export default function LineChart({dates, amounts}){
         labels,
         datasets: [
           {
-            label: 'Số từ vựng',
+            label: 'Vocabulary quantity',
             data: amounts,
             borderColor: 'rgb(255, 99, 132)',
             backgroundColor: 'rgba(255, 99, 132, 0.5)',
@@ -46,7 +46,7 @@ export default function LineChart({dates, amounts}){
         plugins: {
           title: {
             display: true,
-            text: 'Lượng từ học qua từng ngày',
+            text: 'The amount of words learned each day',
             position: 'bottom'
           },
           legend:{

@@ -19,14 +19,14 @@ export default function PieChart({learned, learning, notlearn}){
                 borderRadius: '50%', 
                 backgroundColor: '#ccc' 
             }}>
-                Không có dữ liệu
+                No data
             </div>
         </div>
       );
     }
     else{
       const data = {
-        labels: ['Đã học', 'Đang học', 'Chưa học'],
+        labels: ['Learned', 'learning', 'Not learn'],
         datasets: [
           {
             label: 'Số từ',
