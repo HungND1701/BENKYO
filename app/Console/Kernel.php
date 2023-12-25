@@ -20,7 +20,7 @@ class Kernel extends ConsoleKernel
             foreach ($users as $user) {
                 $flashcardCount = Flashcard::where('learn_points', 0)->count();
                 DB::table('notifications')->insert([
-                    'content' => 'Hôm nay bạn còn '.$flashcardCount.' từ chưa học',
+                    'content' => 'Today you have '.$flashcardCount.' unlearned words',
                     'is_read' => 0,
                     'user_id' => $user->id,
                     'created_at' => now(),
